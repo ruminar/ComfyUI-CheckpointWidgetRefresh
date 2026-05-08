@@ -39,6 +39,10 @@ git clone https://github.com/ruminar/ComfyUI-CheckpointWidgetRefresh.git
 3. **ボタンを押す**
    `Refresh Checkpoint Widgets` ボタンを押せば、対象ノードの選択肢が最新状態に更新されるぞ！
 
+<br/>
+
+   <img width="982" height="418" alt="image" src="https://github.com/user-attachments/assets/112b8c0c-b2da-4d55-a622-5dbd0af9d2be" />
+
 ## 対応ノード
 
 * `CheckpointLoaderSimple`
@@ -48,3 +52,9 @@ git clone https://github.com/ruminar/ComfyUI-CheckpointWidgetRefresh.git
 
 GPL-3.0
 （ComfyUI本体の掟に従っておるぞ！）
+
+## 説明画像
+
+<img width="1024" height="1536" alt="ComfyUI-CheckpointWidgetRefresh説明" src="https://github.com/user-attachments/assets/d1b7e020-5f60-4ad8-a006-639ae3335fe4" />
+
+<br/>
