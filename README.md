@@ -1,0 +1,2 @@
+# ComfyUI-CheckpointWidgetRefresh
+ComfyUIを再起動せずに、checkpoint系の選択リストを現在のファイル状態へ同期する小さなUIノードです。
