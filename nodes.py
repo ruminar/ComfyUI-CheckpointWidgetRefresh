@@ -20,13 +20,6 @@ def _clear_checkpoint_filename_cache():
 
 
 def _scan_registered_checkpoint_folders():
-    """
-    Scan only ComfyUI-registered checkpoint folders.
-
-    This intentionally does NOT accept arbitrary user-supplied paths.
-    It should pick up files added/removed under normal checkpoints paths,
-    including paths registered through extra_model_paths.yaml.
-    """
     results = set()
     extensions = _get_supported_checkpoint_extensions()
 
@@ -54,10 +47,6 @@ def _scan_registered_checkpoint_folders():
 
 
 def _get_fresh_checkpoints():
-    """
-    Prefer ComfyUI's own list after clearing its filename cache.
-    Merge direct scanning as a safety net for stale model-library states.
-    """
     _clear_checkpoint_filename_cache()
 
     results = set()
@@ -75,17 +64,7 @@ def _get_fresh_checkpoints():
     return sorted(results, key=lambda value: value.lower())
 
 
-def _patch_backend_checkpoint_widget_classes(checkpoints):
-    """
-    Patch backend class contracts for checkpoint combo nodes.
-
-    Updating only the browser-side widget list is not enough.
-    ComfyUI backend prompt validation can still use stale INPUT_TYPES / RETURN_TYPES.
-
-    Targets:
-      - CheckpointNameSelector-style nodes
-      - CheckpointLoaderSimple
-    """
+def _patch_backend_checkpoint_classes(checkpoints):
     patched = []
 
     try:
@@ -125,6 +104,32 @@ def _patch_backend_checkpoint_widget_classes(checkpoints):
                 patched.append(name)
                 continue
 
+            if name == "CheckpointNameCycler":
+                def cycler_input_types(cls, _checkpoint_values=checkpoint_values):
+                    values = list(_checkpoint_values) or [""]
+                    return {
+                        "required": {
+                            "start_checkpoint": (values,),
+                            "mode": (["fixed", "increment", "randomize", "shuffle_once"], {"default": "increment"}),
+                            "change_every": ("INT", {"default": 1, "min": 1, "max": 999999}),
+                        },
+                        "hidden": {
+                            "unique_id": "UNIQUE_ID",
+                        },
+                    }
+
+                node_class.INPUT_TYPES = classmethod(cycler_input_types)
+                node_class.RETURN_TYPES = (
+                    list(checkpoint_values),
+                    "STRING",
+                    "STRING",
+                    "INT",
+                    "INT",
+                    "INT",
+                )
+                patched.append(name)
+                continue
+
         except Exception as exc:
             print(f"[CheckpointWidgetRefresh] failed to patch {name}: {exc}")
 
@@ -137,7 +142,7 @@ routes = PromptServer.instance.routes
 @routes.get("/checkpoint_widget_refresh/checkpoints")
 async def checkpoint_widget_refresh_checkpoints(_request):
     checkpoints = _get_fresh_checkpoints()
-    patched = _patch_backend_checkpoint_widget_classes(checkpoints)
+    patched = _patch_backend_checkpoint_classes(checkpoints)
 
     return web.json_response({
         "checkpoints": checkpoints,
@@ -148,13 +153,6 @@ async def checkpoint_widget_refresh_checkpoints(_request):
 
 
 class CheckpointWidgetRefreshPanel:
-    """
-    UI-only panel node.
-
-    The refresh button itself is implemented in web/checkpoint_widget_refresh.js.
-    This backend node exists so the button can be placed inside a workflow as a small panel.
-    """
-
     @classmethod
     def INPUT_TYPES(cls):
         return {
