@@ -16,6 +16,10 @@ ComfyUIを再起動せずに、Checkpoint系の選択リストを現在のファ
 - **バックエンドまで貫くパッチ** <br/>
   ブラウザ上の表示を変えるだけではない。Python側の型定義（`INPUT_TYPES` など）まで更新するため、バリデーションで弾かれる心配も少ないのじゃ。
 
+- **Checkpoint Name Cycler との強力連携** (New!) <br/>
+  これと対となるノード、**[`Checkpoint Name Cycler`](https://github.com/ruminar/ComfyUI-CheckpointNameCycler)** があれば、巡回状態も初期化するぞ。 <br/>
+  `start_checkpoint` から改めて巡回を始めたい時は、リフレッシュボタンをクリックじゃ！
+
 - **徹底した軽量設計** <br/>
   常時監視やポーリングは一切しない。おぬしが「今だ！」とボタンを押した時だけ動く、ワークフローの邪魔をしない奥ゆかしい実用品じゃ。
 
@@ -25,7 +29,7 @@ ComfyUIの `custom_nodes` ディレクトリで、以下のコマンドを打ち
 
 ```bash
 git clone https://github.com/ruminar/ComfyUI-CheckpointWidgetRefresh.git
-````
+```
 
 ## 使い方
 
@@ -41,12 +45,14 @@ git clone https://github.com/ruminar/ComfyUI-CheckpointWidgetRefresh.git
 
 <br/>
 
-   <img width="982" height="418" alt="image" src="https://github.com/user-attachments/assets/112b8c0c-b2da-4d55-a622-5dbd0af9d2be" />
+   <img width="876" height="480" alt="image" src="https://github.com/user-attachments/assets/ce6f8c34-0828-44b4-aae5-538d7dcb9268" />
+
 
 ## 対応ノード
 
 * `CheckpointLoaderSimple`
 * `CheckpointNameSelector` 系ノード
+* [`Checkpoint Name Cycler`](https://github.com/ruminar/ComfyUI-CheckpointNameCycler)
 
 ## ライセンス
 
@@ -56,5 +62,3 @@ GPL-3.0
 ## 説明画像
 
 <img width="1024" height="1536" alt="ComfyUI-CheckpointWidgetRefresh説明" src="https://github.com/user-attachments/assets/d1b7e020-5f60-4ad8-a006-639ae3335fe4" />
-
-<br/>
