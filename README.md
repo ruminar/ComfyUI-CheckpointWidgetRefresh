@@ -52,7 +52,7 @@ git clone https://github.com/ruminar/ComfyUI-CheckpointWidgetRefresh.git
 
 * `CheckpointLoaderSimple`
 * `CheckpointNameSelector` 系ノード
-* [`Checkpoint Name Cycler`](https://github.com/ruminar/ComfyUI-CheckpointNameCycler)
+* [`CheckpointNameCycler`](https://github.com/ruminar/ComfyUI-CheckpointNameCycler)
 
 ## ライセンス
 
