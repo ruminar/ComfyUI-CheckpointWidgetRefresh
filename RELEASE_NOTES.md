@@ -1,4 +1,4 @@
-# v0.2.0
+# 0.2.0
 
 CheckpointNameCyclerとの連携機能を追加したのじゃ！
 
